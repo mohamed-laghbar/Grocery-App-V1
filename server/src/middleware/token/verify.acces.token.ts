@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import createError from "@/utils/error/custom.error";
+import {createError} from "@/utils/error/custom.error";
 
 interface TokenPayload {
     _id: string;

@@ -7,8 +7,8 @@ class CustomError extends Error {
     }
 }
 
-const createError = (message: string, statusCode: number): CustomError => {
+export const createError = (message: string, statusCode: number): CustomError => {
     return new CustomError(message, statusCode);
 };
 
-export default createError;
+

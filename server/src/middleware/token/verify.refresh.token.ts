@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import createError from "@/utils/error/custom.error";
+import {createError} from "@/utils/error/custom.error";
 import accesToken from "@/utils/token/generate.acces.token";
 import * as jwt from "jsonwebtoken";
 import userModel from "@/resources/user/user.model";
