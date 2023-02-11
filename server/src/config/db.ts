@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+require("dotenv").config();
+
 mongoose.set('strictQuery', false);
 
 const url: string | undefined = process.env.DB_URL;
