@@ -1,7 +1,7 @@
 How to use 
 ```
 # Clone this repository
-$ https://github.com/mohamed-laghbar/Grocery-App-React-Natice-Expres-TypScript-Redux-Tool-Kit-MongoDB 
+$ https://github.com/mohamed-laghbar/Grocery-App-V1.git 
 
 # Go into the repository 
 $ cd client 
