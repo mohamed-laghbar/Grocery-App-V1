@@ -1,9 +1,10 @@
-import accesToken from '@/utils/token/generate.acces.token';
-import { createError } from '@/utils/error/custom.error';
+import { generateOTP } from '../../utils/otp/generate.otp';
+import accesToken from '../../utils/token/generate.acces.token';
+import { createError } from '../../utils/error/custom.error';
 import { NextFunction, Request, Response } from 'express';
 import UserModel from './user.model';
 import bcrypt from 'bcryptjs';
-import refreshToken from '@/utils/token/generate.refresh.token';
+import refreshToken from '../../utils/token/generate.refresh.token';
 
 interface Token {
     acces_token: string;
@@ -38,6 +39,28 @@ class UserService {
             return next(error);
         }
     };
+
+
+    public async register(
+        name: String,
+        email: string,
+        password: string,
+        next: NextFunction,
+    ): Promise<void> {
+        try {
+            const user = await this.User.create({
+                name,
+                email,
+                password,
+            });
+            
+            
+        } catch (error) {
+            next(error)
+        }
+
+
+    }
 
 }
 

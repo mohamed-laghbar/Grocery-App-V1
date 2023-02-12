@@ -1,4 +1,4 @@
-import UserService from "@/resources/user/user.service";
+import UserService from "./user.service";
 import { Router, Request, Response, NextFunction } from "express";
 
 interface Token {

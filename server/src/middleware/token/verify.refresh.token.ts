@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import {createError} from "@/utils/error/custom.error";
+import { createError } from "@/utils/error/custom.error";
 import accesToken from "@/utils/token/generate.acces.token";
 import * as jwt from "jsonwebtoken";
 import userModel from "@/resources/user/user.model";
@@ -12,28 +12,29 @@ interface TokenPayload {
 }
 
 const verifyRefreshToken = async (
-    req: Request & { cookies?: string },
+    req: Request & { cookies?: { [key: string]: string } },
     res: Response,
     next: NextFunction
-) => {
+): Promise<void> => {
     try {
-        const refresh_token: string | undefined = req?.cookies;
-        if (!refresh_token)
+        const refreshToken: string | undefined = req?.cookies?.refresh_token;
+        if (!refreshToken) {
             return next(createError("Refresh Token Not Found", 401));
+        }
 
-        const user = await userModel.findOne({ refresh_token });
-        if (!user) return next(createError("Invalid Refresh Token", 401));
+        const user = await userModel.findOne({ refresh_token: refreshToken });
+        if (!user) {
+            return next(createError("Refresh Token dosen't match", 401));
+        }
 
-        jwt.verify(refresh_token, process.env.REFRESH_SECRET as string);
+        const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET as string) as TokenPayload;
+        const newAccessToken =  accesToken(user);
 
-        const new_acces_token: String = accesToken(user);
-        
-        res.status(200).json({ acces_token: new_acces_token });
-
+        res.status(200).json({ access_token: newAccessToken });
     } catch (error) {
         next(error);
-        return next(createError("Expired Refresh Token, Please Login Again", 401));
     }
 };
+
 
 export default verifyRefreshToken;

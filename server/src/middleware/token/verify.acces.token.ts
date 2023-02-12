@@ -7,7 +7,7 @@ interface TokenPayload {
     email: string;
 }
 
-const verifyAccessToken = (req: Request & { user?: TokenPayload }, res: Response, next: NextFunction) => {
+const verifyAccessToken = (req: Request & { user?: TokenPayload }, res: Response, next: NextFunction) :void => {
     const token = req.header("Authorization")?.split(" ")[1];
     if (!token) return next(createError('Access token is required', 401))
 
