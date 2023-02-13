@@ -4,14 +4,24 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import compression from 'compression';
 import helmet from 'helmet';
-import * as db from './src/config/db';
-db;
+import * as initDB from './src/config/db';
+import session from 'express-session';
+
+
+initDB;
 dotenv.config();
 
 import userRouter from './src/resources/user/user.route'
 import ErrorHandler from "./src/middleware/error/error.handler";
 
 const app = express();
+
+
+app.use(session({
+  secret: 'my secret',
+  resave: false,
+  saveUninitialized: true,
+}));
 
 app.use(helmet());
 app.use(cookieParser());

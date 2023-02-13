@@ -44,13 +44,14 @@ class UserService {
         email: string,
         password: string,
         next: NextFunction
-    ): Promise<void> {
+    ): Promise<boolean | void> {
         try {
             const checkEmail = await this.User.findOne({ email });
             if (checkEmail) return next(createError("email already exist", 400));
 
             const otp = generateOTP();
             const hachedPassword = await bcrypt.hash(password, 10);
+
             const user = await this.User.create({
                 name,
                 email,
@@ -60,7 +61,10 @@ class UserService {
             });
 
             if (!user) return next(createError("Can't register , try again", 400));
+
             await sendConfirmationEmail(name, email, otp, next);
+
+            return true;
         } catch (error) {
             return next(error);
         }
@@ -75,12 +79,13 @@ class UserService {
             const user = await this.User.findOne({ email });
             if (!user) return next(createError("User not found", 401));
 
-            if (user.otp !== otpCode) return next(createError("Invalid OTP", 401));
+            if (user.otp !== otpCode) return false;
 
             user.isVerified = true;
             await user.save();
+            return true;
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 }
