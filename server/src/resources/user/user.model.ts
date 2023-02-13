@@ -5,7 +5,9 @@ interface User extends Document {
     email: string;
     password: string;
     refresh_token: string;
-}
+    otp: number;
+    isVerified: boolean;
+};
 
 const UserSchema: Schema = new Schema({
     name: {
@@ -27,6 +29,19 @@ const UserSchema: Schema = new Schema({
         required: false,
         default: ''
     },
-});
+    otp: {
+        type: Number,
+        required: false,
+        default: '',
+    },
+    isVerified: {
+        type: Boolean,
+        default: false,
+        required: false
+    },
+
+},
+    { timestamps: true }
+);
 
 export default mongoose.model<User>("User", UserSchema);

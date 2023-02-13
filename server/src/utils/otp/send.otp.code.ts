@@ -1,3 +1,4 @@
+import { NextFunction } from 'express';
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
@@ -13,7 +14,7 @@ const transport = nodemailer.createTransport({
     },
 });
 
-const sendConfirmationEmail = (name: string, email: string, otp_code: number) => {
+const sendConfirmationEmail = async (name: string, email: string, otp_code: number,next:NextFunction): Promise<Error | void> => {
     console.log("Check");
     transport
         .sendMail({
@@ -22,10 +23,10 @@ const sendConfirmationEmail = (name: string, email: string, otp_code: number) =>
             subject: "Please confirm your account",
             html: `<h1>Email Confirmation</h1>
           <h2>Hello ${name}</h2>
-          <p> Please confirm your email by clicking on the following code ${otp_code}</p>
+          <p> Please confirm your account by entring the following code<b> ${otp_code}<b></p>
           </div>`,
         })
-        .catch((err) => console.log(err));
+        .catch((err) => next(err))
 };
 
 

@@ -26,6 +26,28 @@ class UserController {
             return next(error);
         }
     };
+
+
+    public register = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> => {
+        try {
+            const { name, email, password } = req.body;
+
+            await this.UserService.register(name, email, password, next);
+            res.status(201).json({ seccus: true, email });
+
+        } catch (error) {
+            return next(error);
+        }
+    };
+
+
+    
+
+
 }
 
 export default UserController;
