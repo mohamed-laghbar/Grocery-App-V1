@@ -1,13 +1,7 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema } from "mongoose";
+import { UserInterface } from '../../utils/interface/user.interface'
 
-interface User extends Document {
-    name: string;
-    email: string;
-    password: string;
-    refresh_token: string;
-    otp: number;
-    isVerified: boolean;
-};
+
 
 const UserSchema: Schema = new Schema({
     name: {
@@ -44,4 +38,4 @@ const UserSchema: Schema = new Schema({
     { timestamps: true }
 );
 
-export default mongoose.model<User>("User", UserSchema);
+export default mongoose.model<UserInterface>("User", UserSchema);
