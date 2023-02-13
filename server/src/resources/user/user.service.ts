@@ -19,15 +19,16 @@ class UserService {
         email: string,
         password: string,
         next: NextFunction
-    ): Promise<string | void | Token> {
+    ): Promise<Token | void> {
         try {
             const user = await this.User.findOne({ email });
             if (!user)
                 return next(
                     createError("Unable to find user with that email address", 401)
                 );
+            if (!user.isVerified) return next(createError('User account is not verified', 401));
 
-            const isMatch = bcrypt.compare(password, user.password);
+            const isMatch =await bcrypt.compare(password, user.password);
             if (!isMatch) return next(createError("Wrong Password", 401));
 
             const acces_token = accesToken(user);

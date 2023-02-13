@@ -26,8 +26,9 @@ class UserController {
             if (typeof loginResult === "object" && "acces_token" in loginResult) {
 
                 const { acces_token, refresh_token } = loginResult;
-                res.status(200).json({ acces_token, refresh_token });
+                return res.status(200).json({ acces_token, refresh_token });
             }
+
         } catch (error) {
             return next(error);
         }
