@@ -3,13 +3,10 @@ import { createError } from "@/utils/error/custom.error";
 import accesToken from "@/utils/token/generate.acces.token";
 import * as jwt from "jsonwebtoken";
 import userModel from "@/resources/user/user.model";
+import { JWTPayload } from './../../utils/interface/token.interface';
 
-require("dotenv").config();
 
-interface TokenPayload {
-    _id: string;
-    email: string;
-}
+
 
 const verifyRefreshToken = async (
     req: Request & { cookies?: { [key: string]: string } },
@@ -27,7 +24,7 @@ const verifyRefreshToken = async (
             return next(createError("Refresh Token dosen't match", 401));
         }
 
-        const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET as string) as TokenPayload;
+        const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET as string) as JWTPayload;
         const newAccessToken =  accesToken(user);
 
         res.status(200).json({ access_token: newAccessToken });
