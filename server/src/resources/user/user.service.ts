@@ -26,9 +26,10 @@ class UserService {
                 return next(
                     createError("Unable to find user with that email address", 401)
                 );
-            if (!user.isVerified) return next(createError('User account is not verified', 401));
+            if (!user.isVerified)
+                return next(createError("User account is not verified", 401));
 
-            const isMatch =await bcrypt.compare(password, user.password);
+            const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) return next(createError("Wrong Password", 401));
 
             const acces_token = accesToken(user);
@@ -48,7 +49,7 @@ class UserService {
     ): Promise<boolean | void> {
         try {
             const checkEmail = await this.User.findOne({ email });
-            if (checkEmail) return next(createError("email already exist", 400));
+            if (checkEmail) return next(createError("Email already exist", 400));
 
             const otp = generateOTP();
             const hachedPassword = await bcrypt.hash(password, 10);

@@ -1,8 +1,7 @@
-import { createError } from '../../utils/error/custom.error';
+import { createError } from "../../utils/error/custom.error";
 import UserService from "./user.service";
 import { Router, Request, Response, NextFunction } from "express";
-import session, { Session, SessionData } from 'express-session';
-
+import session, { Session, SessionData } from "express-session";
 
 interface Token {
     acces_token: string;
@@ -24,11 +23,9 @@ class UserController {
             const loginResult = await this.UserService.login(email, password, next);
 
             if (typeof loginResult === "object" && "acces_token" in loginResult) {
-
                 const { acces_token, refresh_token } = loginResult;
                 return res.status(200).json({ acces_token, refresh_token });
             }
-
         } catch (error) {
             return next(error);
         }
@@ -65,11 +62,10 @@ class UserController {
             const { otp } = req.body;
             const userEmail = this.costumSession.email;
 
-
             const user = await this.UserService.verifyOtp(userEmail, otp, next);
             if (!user) return next(createError("Invalid OTP", 400));
 
-            return res.json({ message: 'You account is activated' });
+            return res.json({ message: "You account is activated" });
         } catch (error) {
             return next(error);
         }
